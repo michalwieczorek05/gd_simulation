@@ -1,0 +1,27 @@
+cutoff_dependent_parameters:
+  cutoff: 160
+  rescaling_parameter: 3167.16
+
+model_parameters:
+  phi0: 2.3675
+  d_phi0: -0.0000013683
+  chi0: 0.
+  d_chi0: 0.
+  a0: 1.
+  specific_model_parameters:
+    M: 0.00327688
+    MInt: 0.03162
+    Mh: 0.0000611935
+
+error_analysis_parameters:
+  tau1: 0.00001
+  tau2: 0.000002 #should be smaller than 1/5 tau1
+
+technical_parameters:
+  continuation: False #can be True or False
+  N: 32
+  steps_number: 20000
+  startIter: 10000 #should be the multiplication of 10000
+  initial_time_step: 0.0001
+  output_dir_path: '../Results/ResultsForStarobinskyModel/'
+  write_separate_potential_energy: True
