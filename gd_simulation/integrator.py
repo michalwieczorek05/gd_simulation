@@ -40,18 +40,9 @@ class Integrator:
         partial_state.pa += (h / 2.) * np.sum(pw2(partial_state.chiPi)) / pow(partial_state.a, 3)
         partial_state.chi += (h / (2. * pw2(partial_state.a))) * partial_state.chiPi
 
-        partial_state.pa -= (h) * pow(N * partial_state.a, 3.) * (2. * (np.average(Energy.phi_gradient_energy(partial_state)) +
-                                                                        np.average(Energy.chi_gradient_energy(
-                                                                            partial_state))) + 4. * np.average(Model.potential(
-            partial_state.phi, partial_state.chi)))
-        partial_state.phiPi -= (h) * (
-                    pow(partial_state.a, 4) * Model.d_phi_potential(partial_state.phi, partial_state.chi) +
-                    pow(partial_state.a, 2) * dgradPhiTerm(partial_state.phi, partial_state.chi) / 2.)
-        partial_state.chiPi -= (h) * (
-                    pow(partial_state.a, 4) * Model.d_chi_potential(partial_state.phi, partial_state.chi) +
-                    pow(partial_state.a, 2) * (dgradChiTerm(partial_state.chi)
-                                               / 2. + chiPiPartSecondUpdate(partial_state.chi) * Energy.grad2(
-                        partial_state.phi)))
+        partial_state.pa -= (h) * pow(N * partial_state.a, 3.) * (2. * (np.average(Energy.phi_gradient_energy(partial_state)) + np.average(Energy.chi_gradient_energy(partial_state))) + 4. * np.average(Model.potential(partial_state.phi, partial_state.chi)))
+        partial_state.phiPi -= (h) * (pow(partial_state.a, 4) * Model.d_phi_potential(partial_state.phi, partial_state.chi) +pow(partial_state.a, 2) * dgradPhiTerm(partial_state.phi, partial_state.chi) / 2.)
+        partial_state.chiPi -= (h) * (pow(partial_state.a, 4) * Model.d_chi_potential(partial_state.phi, partial_state.chi) +pow(partial_state.a, 2) * (dgradChiTerm(partial_state.chi)/ 2. + chiPiPartSecondUpdate(partial_state.chi) * Energy.grad2(partial_state.phi)))
 
         partial_state.chi += (h / (2. * pw2(partial_state.a))) * partial_state.chiPi
         partial_state.pa += (h / 2.) * np.sum(pw2(partial_state.chiPi)) / pow(partial_state.a, 3)

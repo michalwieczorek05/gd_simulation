@@ -27,22 +27,17 @@ class System_State:
 
     def _scale_factor_initialize(self):
         if continuation:
-            self.current_state.a, self.current_state.pa = np.load(f"{output_dir_path}finalaPiaData"
-                                                                  f"{Comment}{startIter}.npy")
+            self.current_state.a, self.current_state.pa = np.load(f"{output_dir_path}finalaPiaData{Comment}{startIter}.npy")
         else:
             self.current_state.a = a0
-            self.current_state.pa = -6. * pow(N, 3) * MPl * \
-                                    math.sqrt((pow(d_phi0, 2) / 2. + Model.potential(phi0, chi0)) / 3.)
+            self.current_state.pa = -6. * pow(N, 3) * MPl * math.sqrt((pow(d_phi0, 2) / 2. + Model.potential(phi0, chi0)) / 3.)
 
     def _phi_initialize(self):
         if continuation:
-            self.current_state.phi = np.load(
-                f"{output_dir_path}finalPhiFieldData{Comment}{startIter}.npy")
-            self.current_state.phiPi = np.load(
-                f"{output_dir_path}finalPhiPiFieldData{Comment}{startIter}.npy")
+            self.current_state.phi = np.load(f"{output_dir_path}finalPhiFieldData{Comment}{startIter}.npy")
+            self.current_state.phiPi = np.load(f"{output_dir_path}finalPhiPiFieldData{Comment}{startIter}.npy")
         else:
-            m2Phi = Model.dd_phiphi_potential(phi0, chi0) - 2. * (pow(d_phi0, 2) / 2. + Model.potential(phi0, chi0)) / (
-                    3. * pow(MPl, 2.))
+            m2Phi = Model.dd_phiphi_potential(phi0, chi0) - 2. * (pow(d_phi0, 2) / 2. + Model.potential(phi0, chi0)) / (3. * pow(MPl, 2.))
             self.current_state.phi, self.current_state.phiPi = Initialize.initialize_field_non_zero_modes(m2Phi)
             self.current_state.phi = np.array(self.current_state.phi)
             self.current_state.phiPi = np.array(self.current_state.phiPi)
@@ -56,9 +51,7 @@ class System_State:
             self.current_state.chiPi = np.load(
                 f"{output_dir_path}finalChiPiFieldData{Comment}{startIter}.npy")
         else:
-            m2Chi = Model.dd_chichi_potential(phi0, chi0) - 2. * \
-                    (pow(d_phi0, 2) / 2. + Model.potential(phi0, chi0)) / \
-                    (3. * pow(MPl, 2.)) - Model.dd_non_canonical_multiplier(chi0)*pow(d_phi0, 2)/2.
+            m2Chi = Model.dd_chichi_potential(phi0, chi0) - 2. * (pow(d_phi0, 2) / 2. + Model.potential(phi0, chi0)) / (3. * pow(MPl, 2.)) - Model.dd_non_canonical_multiplier(chi0)*pow(d_phi0, 2)/2.
             self.current_state.chi, self.current_state.chiPi = Initialize.initialize_field_non_zero_modes(m2Chi)
             self.current_state.chi = np.array(self.current_state.chi)
             self.current_state.chiPi = np.array(self.current_state.chiPi)

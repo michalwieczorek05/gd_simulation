@@ -10,8 +10,7 @@ modeNorm = pow(N, (3. / 2.)) / math.sqrt(2)
 class Initialize():
     @staticmethod
     def _set_mode(i, l, k, m2, real=0):
-        momentum2 = pow(2 * math.pi, 2) * (pow(min(i, N - i), 2) + pow(min(l, N - l), 2) + pow(min(k, N - k), 2)) / pow(N,
-                                                                                                                        2.)  # p^2 = (2*Pi/L)^2*(i^2 + j^2 + k^2)     L=N (if h=1, which we assume)
+        momentum2 = pow(2 * math.pi, 2) * (pow(min(i, N - i), 2) + pow(min(l, N - l), 2) + pow(min(k, N - k), 2)) / pow(N,2.)
         if momentum2 + m2 > 0:
             omega = math.sqrt(momentum2 + m2)
         else:
