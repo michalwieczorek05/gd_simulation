@@ -1,8 +1,9 @@
 import math
 import numpy as np
+import os
 from energy import Energy
 from global_variables import continuation, output_dir_path, Comment, N, MPl, tau1, tau2, kappa1, kappa2, CutOff, \
-    initial_time_step, steps_number, write_separate_potential_energy, specific_model_parameters
+    initial_time_step, steps_number, write_separate_potential_energy, specific_model_parameters, start_iter
 from model import Model
 from update_functions import dgradPhiTerm, paFirstUpdate, phiFirstUpdate, chiPiFirstUpdate, dgradChiTerm, \
     chiPiPartSecondUpdate
@@ -17,17 +18,17 @@ class Integrator:
     def create_files_dict(self):
         files_dict = {}
         if continuation:
-            files_dict['EfoldsBoxPlotList'] = open(f"{output_dir_path}EfoldsBoxPlotList{Comment}.dat", 'a')
-            files_dict['dtList'] = open(f"{output_dir_path}dtList{Comment}.dat", 'a')
-            files_dict['energyData'] = open(f"{output_dir_path}energyData{Comment}.dat", 'a')
-            files_dict['fieldData'] = open(f"{output_dir_path}fieldData{Comment}.dat", 'a')
-            files_dict['chiMagnitudeData'] = open(f"{output_dir_path}chiMagnitudeData{Comment}.dat", 'a')
+            files_dict['EfoldsBoxPlotList'] = open(os.path.join(output_dir_path, f'EfoldsBoxPlotList{Comment}.dat'), 'a')
+            files_dict['dtList'] = open(os.path.join(output_dir_path, f'dtList{Comment}.dat'), 'a')
+            files_dict['energyData'] = open(os.path.join(output_dir_path, f'energyData{Comment}.dat'), 'a')
+            files_dict['fieldData'] = open(os.path.join(output_dir_path, f'fieldData{Comment}.dat'), 'a')
+            files_dict['chiMagnitudeData'] = open(os.path.join(output_dir_path, f'chiMagnitudeData{Comment}.dat'), 'a')
         else:
-            files_dict['EfoldsBoxPlotList'] = open(f"{output_dir_path}EfoldsBoxPlotList{Comment}.dat", 'w')
-            files_dict['dtList'] = open(f"{output_dir_path}dtList{Comment}.dat", 'w')
-            files_dict['energyData'] = open(f"{output_dir_path}energyData{Comment}.dat", 'w')
-            files_dict['fieldData'] = open(f"{output_dir_path}fieldData{Comment}.dat", 'w')
-            files_dict['chiMagnitudeData'] = open(f"{output_dir_path}chiMagnitudeData{Comment}.dat", 'w')
+            files_dict['EfoldsBoxPlotList'] = open(os.path.join(output_dir_path, f'EfoldsBoxPlotList{Comment}.dat'), 'w')
+            files_dict['dtList'] = open(os.path.join(output_dir_path, f'dtList{Comment}.dat'), 'w')
+            files_dict['energyData'] = open(os.path.join(output_dir_path, f'energyData{Comment}.dat'), 'w')
+            files_dict['fieldData'] = open(os.path.join(output_dir_path, f'fieldData{Comment}.dat'), 'w')
+            files_dict['chiMagnitudeData'] = open(os.path.join(output_dir_path, f'chiMagnitudeData{Comment}.dat'), 'w')
         return files_dict
 
     def make_2nd_order_time_step(self, partial_state, h):
@@ -121,22 +122,22 @@ class Integrator:
         self.files_with_data['dtList'].write('\n')
 
     def write_final_data(self, partial_state, step_num):
-        np.save(f"{output_dir_path}finalPhiFieldData{Comment}_iter={step_num}", partial_state.phi)
-        np.save(f"{output_dir_path}finalChiFieldData{Comment}_iter={step_num}", partial_state.chi)
-        np.save(f"{output_dir_path}finalPhiPiFieldData{Comment}_iter={step_num}", partial_state.phiPi)
-        np.save(f"{output_dir_path}finalChiPiFieldData{Comment}_iter={step_num}", partial_state.chiPi)
-        np.save(f"{output_dir_path}finalaPiaData{Comment}_iter={step_num}",
+        np.save(os.path.join(output_dir_path, f'finalPhiFieldData{Comment}_iter={step_num}'), partial_state.phi)
+        np.save(os.path.join(output_dir_path, f'finalChiFieldData{Comment}_iter={step_num}'), partial_state.chi)
+        np.save(os.path.join(output_dir_path, f'finalPhiPiFieldData{Comment}_iter={step_num}'), partial_state.phiPi)
+        np.save(os.path.join(output_dir_path, f'finalChiPiFieldData{Comment}_iter={step_num}'), partial_state.chiPi)
+        np.save(os.path.join(output_dir_path, f'finalaPiaData{Comment}_iter={step_num}'),
                 np.array([partial_state.a, partial_state.pa]))
 
     def write_full_energy_data(self, partial_state):
         efolds = str('%.5f' % math.log(partial_state.a)).replace('.', ',')
-        np.save(f"{output_dir_path}PeriodicEnergyData_Efolds={efolds}{Comment}",
+        np.save(os.path.join(output_dir_path, f'PeriodicEnergyData_Efolds={efolds}{Comment}'),
                 Energy.full_energy(partial_state))
 
     def write_full_field_data(self, partial_state):
         efolds = str('%.5f' % math.log(partial_state.a)).replace('.', ',')
-        np.save(f"{output_dir_path}PeriodicPhiFieldData_Efolds={efolds}{Comment}", partial_state.phi)
-        np.save(f"{output_dir_path}PeriodicChiFieldData_Efolds={efolds}{Comment}", partial_state.chi)
+        np.save(os.path.join(output_dir_path, f'PeriodicPhiFieldData_Efolds={efolds}{Comment}'), partial_state.phi)
+        np.save(os.path.join(output_dir_path, f'PeriodicChiFieldData_Efolds={efolds}{Comment}'), partial_state.chi)
 
     def write_efolds_for_periodic_full_data(self, partial_state):
         efolds = str('%.5f' % math.log(partial_state.a)).replace('.', ',')
@@ -144,7 +145,7 @@ class Integrator:
         self.files_with_data['EfoldsBoxPlotList'].write('	')
 
     def write_run_informations(self):
-        InfData = open(f"{output_dir_path}RunInformation{Comment}.dat", 'w')
+        InfData = open(os.path.join(output_dir_path, f'RunInformation{Comment}.dat'), 'w')
         InfData.write('N=' + repr(N))
         InfData.write('\n')
         InfData.write('CutOff=' + repr(CutOff))
@@ -159,6 +160,10 @@ class Integrator:
     def integrate(self, system_state):
         h = initial_time_step
         for step_num in range(steps_number):
+            if continuation:
+                save_step_num = step_num + start_iter
+            else:
+                save_step_num = step_num
             if (step_num % 100) == 0:
                 print(step_num)
             if (step_num % 1000) == 0:
@@ -166,7 +171,7 @@ class Integrator:
                 self.write_full_field_data(system_state.current_state)
                 self.write_efolds_for_periodic_full_data(system_state.current_state)
             if (step_num % 10000 == 0) and step_num > 0:
-                self.write_final_data(system_state.current_state, step_num)
+                self.write_final_data(system_state.current_state, save_step_num)
 
             system_state.make_error_state_assignment()
             system_state.make_new_to_old_assignment()
@@ -178,6 +183,6 @@ class Integrator:
                 system_state.make_old_to_new_assignment()
             elif error < tau2:
                 h = h * ((tau2 / error) ** (1. / 3.)) * kappa2
-            self.write_curent_data(system_state.current_state, step_num, h)
-        self.write_final_data(system_state.current_state, steps_number)
+            self.write_curent_data(system_state.current_state, save_step_num, h)
+        self.write_final_data(system_state.current_state, save_step_num + 1)
 

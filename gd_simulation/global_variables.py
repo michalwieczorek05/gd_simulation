@@ -34,13 +34,20 @@ initial_time_step = run_parameters['technical_parameters']['initial_time_step']
 N = run_parameters['technical_parameters']['N']
 steps_number = run_parameters['technical_parameters']['steps_number']
 continuation = run_parameters['technical_parameters']['continuation']
-startIter = f"_iter={run_parameters['technical_parameters']['startIter']}"
+start_iter = run_parameters['technical_parameters']['start_iter']
+startIter = f"_iter={run_parameters['technical_parameters']['start_iter']}"
 write_separate_potential_energy = run_parameters['technical_parameters']['write_separate_potential_energy']
 
 
 # names of different files
 output_dir_path = run_parameters['technical_parameters']['output_dir_path']
-SpecialComment = ''
-Comment = f"_MInt={str(specific_model_parameters['MInt']).replace('.', ',')}" \
-    f"_Mh={str(specific_model_parameters['Mh']).replace('.', ',')}_CO={CutOff}_N=" \
-    f"{N}{SpecialComment}"
+SpecialComment = run_parameters['technical_parameters']['special_comment']
+parameters_included_in_files_names = run_parameters['technical_parameters']['parameters_included_in_files_names']
+Comment = ''
+for parameters in parameters_included_in_files_names:
+	if parameters == 'specific_model_parameters':
+		for parameter in parameters_included_in_files_names[parameters]:
+			Comment += f'_{parameter}={run_parameters["model_parameters"]["specific_model_parameters"][parameter]}'
+	else:
+		for parameter in parameters_included_in_files_names[parameters]:
+			Comment += f'_{parameter}={run_parameters[parameters][parameter]}'

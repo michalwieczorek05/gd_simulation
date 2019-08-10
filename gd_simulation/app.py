@@ -4,7 +4,7 @@ from global_variables import MPl
 from integrator import Integrator
 from system_state import System_State
 
-def InitialPrint(partial_state):
+def initial_print(partial_state):
     print('The initial potential energy is:')
     print(np.average(Energy.potential_energy(partial_state))/pow(MPl, 4))
     print('Initial Phi Gradient energy is:')
@@ -17,7 +17,7 @@ def InitialPrint(partial_state):
     print(np.average(Energy.chi_kinetic_energy(partial_state))/pow(MPl, 4))
 
 
-def FinalPrint(partial_state):
+def final_print(partial_state):
     print('The potential energy is:')
     print(np.average(Energy.potential_energy(partial_state))/pow(MPl, 4))
     print('Phi Gradient energy is:')
@@ -32,11 +32,11 @@ def FinalPrint(partial_state):
 def main():
     system_state = System_State()
     system_state.initialize()
-    InitialPrint(system_state.current_state)
+    initial_print(system_state.current_state)
     integrator = Integrator()
     integrator.write_run_informations()
     integrator.integrate(system_state)
-    FinalPrint(system_state.current_state)
+    final_print(system_state.current_state)
 
 if __name__ == "__main__":
     main()

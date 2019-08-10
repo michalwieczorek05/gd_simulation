@@ -14,14 +14,23 @@ model_parameters:
     Mh: 0.0000611935
 
 error_analysis_parameters:
-  tau1: 0.00001
-  tau2: 0.000002 #should be smaller than 1/5 tau1
+  tau1: 0.000005
+  tau2: 0.000001
 
 technical_parameters:
-  continuation: False #can be True or False
+  continuation: True #can be True or False
   N: 32
-  steps_number: 20000
-  startIter: 10000 #should be the multiplication of 10000
+  steps_number: 10000
+  start_iter: 30000 #should be the multiplication of 10000
   initial_time_step: 0.0001
-  output_dir_path: '../Results/ResultsForStarobinskyModel/'
+  output_dir_path: '../Results/ResultsForStarobinskyModel2'
   write_separate_potential_energy: True
+  special_comment: ''
+  parameters_included_in_files_names:
+    cutoff_dependent_parameters:
+      - 'cutoff'
+    technical_parameters:
+      - 'N'
+    specific_model_parameters:
+      - 'MInt'
+      - 'Mh'
